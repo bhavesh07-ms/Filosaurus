@@ -1,0 +1,54 @@
+package com.bhavesh.invoice.service;
+
+
+
+
+import com.bhavesh.invoice.payloads.Metadata;
+import com.bhavesh.invoice.storage.InvoiceStorageClient;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.UUID;
+
+@Service
+public class InvoiceUploadService {
+
+    private final VirusScanner scanner;
+    private final KafkaInvoiceProducer kafka;
+    private final MetadataExtractor extractor;
+    private final InvoiceStorageClient storage;
+
+    public InvoiceUploadService(VirusScanner scanner,
+                                KafkaInvoiceProducer kafka,
+                                MetadataExtractor extractor,
+                                InvoiceStorageClient storage) {
+        this.scanner = scanner;
+        this.kafka = kafka;
+        this.extractor = extractor;
+        this.storage = storage;
+    }
+
+    public void upload(MultipartFile file, String userId) {
+        try {
+            scanner.ensureSafe(file);
+
+            String fileId = UUID.randomUUID().toString();
+            String checksum = DigestUtils.sha256Hex(file.getInputStream());
+
+            Metadata meta = extractor.extract(file);
+            meta.setChecksum(checksum);
+            meta.setFileId(fileId);
+            meta.setUserId(userId);
+
+            storage.storeToS3(fileId, file);
+            storage.storeToMongo(fileId, meta, userId);
+
+            kafka.sendInvoiceEvent(fileId, userId);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error processing invoice upload", e);
+        }
+    }
+}
