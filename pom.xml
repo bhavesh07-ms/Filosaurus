@@ -6,12 +6,14 @@
   <version>1.0-SNAPSHOT</version>
   <name>resilient-invoice-system</name>
   <url>http://maven.apache.org</url>
-    <modules>
-      <module>invoice-api</module>
-      <module>invoice-service</module>
-      <module>invoice-storage</module>
-      <module>invoice-common</module>
-    </modules>
+  <modules>
+    <module>invoice-api</module>
+    <module>invoice-service</module>
+    <module>invoice-storage</module>
+    <module>invoice-common</module>
+    <module>common-utils</module>
+    <module>exception-handler</module>
+  </modules>
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -31,5 +33,4 @@
       </plugins>
     </pluginManagement>
   </build>
-
 </project>

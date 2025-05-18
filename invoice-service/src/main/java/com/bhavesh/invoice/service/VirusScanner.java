@@ -1,6 +1,7 @@
 package com.bhavesh.invoice.service;
 
 
+import com.bhavesh.invoice.exception.VirusDetectedException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,8 +11,9 @@ public class VirusScanner {
         // Simulated scan logic
         String filename = file.getOriginalFilename();
         if (filename != null && filename.endsWith(".exe")) {
-            throw new RuntimeException("Potential virus detected: .exe files not allowed");
+            throw new VirusDetectedException("Potential virus detected: .exe files not allowed");
         }
         // ⬅️ In real-world: Integrate ClamAV via REST or socket here
     }
 }
+

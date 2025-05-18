@@ -3,12 +3,12 @@ package com.bhavesh.invoice.service;
 
 
 
+import com.bhavesh.invoice.exception.FileUploadException;
 import com.bhavesh.invoice.payloads.Metadata;
 import com.bhavesh.invoice.storage.InvoiceStorageClient;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.UUID;
 
@@ -48,7 +48,7 @@ public class InvoiceUploadService {
             kafka.sendInvoiceEvent(fileId, userId);
 
         } catch (IOException e) {
-            throw new RuntimeException("Error processing invoice upload", e);
+            throw new FileUploadException("Error processing invoice upload", e);
         }
     }
 }

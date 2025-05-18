@@ -1,4 +1,4 @@
-package com.example.invoiceapi;
+package com.bhavesh.invoice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -26,6 +26,13 @@
       <version>1.15</version> <!-- or latest -->
     </dependency>
 
+    <dependency>
+      <groupId>com.bhavesh.invoice.exception</groupId>
+      <artifactId>exception-handler</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+
     <!-- https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka -->
     <dependency>
       <groupId>org.springframework.kafka</groupId>
@@ -38,6 +45,7 @@
       <artifactId>invoice-common</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
+
 
     <!-- https://mvnrepository.com/artifact/org.apache.tika/tika-core -->
     <dependency>

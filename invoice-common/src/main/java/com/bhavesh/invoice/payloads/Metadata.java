@@ -1,6 +1,8 @@
 package com.bhavesh.invoice.payloads;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,6 +16,14 @@ public class Metadata {
     private long size;
     private String userId;
     private String checksum;
+
+    public void setId(String fileId) {
+        this.fileId = fileId;
+    }
+
+    public void setOriginalFileName(String originalFilename) {
+        this.fileName = originalFilename;
+    }
 
 
     // Getters/Setters
