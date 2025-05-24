@@ -2,6 +2,7 @@ package com.bhavesh.invoice.storage;
 
 
 
+import com.bhavesh.invoice.payloads.Constants;
 import com.bhavesh.invoice.repository.MetadataRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +24,7 @@ public class InvoiceStorageClientImpl implements InvoiceStorageClient {
     @Override
     public void storeToS3(String fileId, MultipartFile file) {
         try {
-            s3Client.putObject(builder -> builder.bucket("your-bucket").key(fileId),
+            s3Client.putObject(builder -> builder.bucket(Constants.BUCKET_NAME).key(fileId),
                     software.amazon.awssdk.core.sync.RequestBody.fromBytes(file.getBytes()));
         } catch (Exception e) {
             throw new RuntimeException("Failed to store to S3", e);

@@ -1,5 +1,6 @@
 package com.bhavesh.invoice.service;
 
+import com.bhavesh.invoice.payloads.Constants;
 import com.bhavesh.invoice.payloads.InvoiceEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,7 @@ public class KafkaInvoiceProducer {
     public void sendInvoiceEvent(String fileId, String userId) {
         InvoiceEvent event = new InvoiceEvent(fileId, userId);
 
-        kafkaTemplate.send("invoice-process", fileId, event)
+        kafkaTemplate.send(Constants.INVOICE_TOPIC, fileId, event)
                 .whenComplete((result, ex) -> {
                     if (ex != null) {
                         System.err.println("Kafka send failed: " + ex.getMessage());
