@@ -6,10 +6,10 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {
-        "com.bhavesh.invoiceapi",        // For controllers
-        "com.bhavesh.invoiceservice",    // For business services
-        "com.bhavesh.invoicestorage",    // For S3/Mongo integrations
-        "com.bhavesh.invoicecommon"      // For shared utils & DTOs
+        "com.bhavesh.invoice.controller",        // For controllers
+        "com.bhavesh.invoice.service",    // For business services
+        "com.bhavesh.invoice.storage",    // For S3/Mongo integrations
+        "com.bhavesh.invoice.common"      // For shared utils & DTOs
 })
 public class InvoiceApiApplication {
     public static void main(String[] args) {

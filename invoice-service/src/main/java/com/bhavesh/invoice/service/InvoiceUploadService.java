@@ -3,6 +3,7 @@ package com.bhavesh.invoice.service;
 
 
 
+import com.bhavesh.invoice.common.MetadataExtractor;
 import com.bhavesh.invoice.exception.FileUploadException;
 import com.bhavesh.invoice.payloads.Metadata;
 import com.bhavesh.invoice.storage.InvoiceStorageClient;
@@ -37,7 +38,7 @@ public class InvoiceUploadService {
             String fileId = UUID.randomUUID().toString();
             String checksum = DigestUtils.sha256Hex(file.getInputStream());
 
-            Metadata meta = extractor.extract(file);
+            Metadata meta = MetadataExtractor.extractMetadata(file,fileId,userId);
             meta.setChecksum(checksum);
             meta.setFileId(fileId);
             meta.setUserId(userId);
