@@ -46,7 +46,7 @@ public class InvoiceUploadService {
             storage.storeToS3(fileId, file);
             storage.storeToMongo(fileId, meta, userId);
 
-            kafka.sendInvoiceEvent(fileId, userId);
+            //kafka.sendInvoiceEvent(fileId, userId);
 
         } catch (IOException e) {
             throw new FileUploadException("Error processing invoice upload", e);

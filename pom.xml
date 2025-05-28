@@ -13,6 +13,9 @@
     <module>invoice-common</module>
     <module>common-utils</module>
     <module>exception-handler</module>
+    <module>invoice-parser</module>
+    <module>document-analyzer</module>
+    <module>notification-service</module>
   </modules>
   <dependencies>
     <dependency>

@@ -3,12 +3,14 @@ package com.bhavesh.invoice.common;
 
 import com.bhavesh.invoice.payloads.Metadata;
 import org.apache.tika.Tika;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+@Component
 public class MetadataExtractor {
 
     private static final Tika tika = new Tika();

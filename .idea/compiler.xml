@@ -7,12 +7,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="common-utils" />
         <module name="exception-handler" />
         <module name="invoice-storage" />
         <module name="invoice-api" />
         <module name="invoice-service" />
+        <module name="common-utils" />
+        <module name="document-analyzer" />
+        <module name="notification-service" />
         <module name="invoice-common" />
+        <module name="invoice-parser" />
       </profile>
     </annotationProcessing>
   </component>
