@@ -18,7 +18,7 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Build Project with Maven (from root)
+      - name: Build Maven Project from Root
         run: mvn clean install -DskipTests
 
       - name: Configure AWS credentials
