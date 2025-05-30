@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: invoice-api-container
-          image: resilient-invoice-system:latest
-          imagePullPolicy: Never
+          image: resilient-invoice-system:latest # <-- will be replaced during CD
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:

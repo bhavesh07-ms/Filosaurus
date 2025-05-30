@@ -4,3 +4,4 @@ invoice-common/target
 invoice-service/target
 invoice-storage/target
 .idea
+.env
