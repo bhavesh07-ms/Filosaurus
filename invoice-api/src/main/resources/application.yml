@@ -1,18 +1,9 @@
-cloud:
-  aws:
-    credentials:
-      access-key: ${AWS_ACCESS_KEY_ID}
-      secret-key: ${AWS_SECRET_ACCESS_KEY}
-    region:
-      static: us-east-1
-    stack:
-      auto: false
-
-application:
-  bucket:
-    name: filosaurus
-
 spring:
   data:
     mongodb:
       database: resilientinvoice
+minio:
+  url: http://localhost:9000
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucket: demo-bucket

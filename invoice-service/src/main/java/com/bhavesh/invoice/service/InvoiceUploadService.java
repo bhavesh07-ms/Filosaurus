@@ -11,6 +11,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.util.UUID;
 
 @Service
@@ -42,8 +43,8 @@ public class InvoiceUploadService {
             meta.setChecksum(checksum);
             meta.setFileId(fileId);
             meta.setUserId(userId);
-
-            storage.storeToS3(fileId, file);
+            String filePath = userId + "/" + fileId;
+            storage.storeTominiIO(filePath, file);
             storage.storeToMongo(fileId, meta, userId);
 
             //kafka.sendInvoiceEvent(fileId, userId);
@@ -52,4 +53,14 @@ public class InvoiceUploadService {
             throw new FileUploadException("Error processing invoice upload", e);
         }
     }
+    public byte[] downloadFile(String fileId, String userId) throws IOException {
+        Metadata meta = storage.getMetadata(fileId);
+
+        if (!meta.isPublic() && !meta.getUserId().equals(userId)) {
+            throw new AccessDeniedException("User not authorized to access this file");
+        }
+
+        return storage.downloadFile(fileId);
+    }
+
 }

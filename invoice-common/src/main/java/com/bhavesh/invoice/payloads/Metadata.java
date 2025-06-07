@@ -25,6 +25,15 @@ public class Metadata {
         this.fileName = originalFilename;
     }
 
+    private boolean isPublic;
+
+    // Add getter and setter
+    public boolean isPublic() {
+        return isPublic;
+    }
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
 
     // Getters/Setters
 }

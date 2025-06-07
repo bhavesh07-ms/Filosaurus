@@ -3,13 +3,18 @@ package com.bhavesh.invoice.storage;
 
 
 import com.bhavesh.invoice.repository.MetadataRepository;
-import lombok.Value;
+import io.minio.GetObjectArgs;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import  com.bhavesh.invoice.payloads.Metadata;
-import software.amazon.awssdk.services.s3.S3Client;
+
+
+import java.io.InputStream;
 
 
 @Component
@@ -18,28 +23,21 @@ public class InvoiceStorageClientImpl implements InvoiceStorageClient {
 
     @Autowired
     BucketProperties bucketProperties;
+    private final MinioClient minioClient;
 
-    private final S3Client s3Client;
     private final MetadataRepository metadataRepository;
 
-    public InvoiceStorageClientImpl(S3Client s3Client, MetadataRepository metadataRepository)
-    {
+    @Value("${minio.bucket}")
+    private String bucketName;
 
-        this.s3Client = s3Client;
+
+    public InvoiceStorageClientImpl(MinioClient minioClient, MetadataRepository metadataRepository)
+    {
+        this.minioClient = minioClient;
         this.metadataRepository = metadataRepository;
     }
 
-    @Override
-    public void storeToS3(String fileId, MultipartFile file) {
-        try {
-            s3Client.putObject(
-                    builder -> builder.bucket(bucketProperties.getName()).key(fileId),
-                    software.amazon.awssdk.core.sync.RequestBody.fromBytes(file.getBytes())
-            );
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to upload to S3", e);
-        }
-    }
+
 
 
 
@@ -50,5 +48,44 @@ public class InvoiceStorageClientImpl implements InvoiceStorageClient {
         metadataRepository.save(meta);
     }
 
+    @Override
+    public void storeTominiIO(String filePath, MultipartFile file) {
+
+        try (InputStream inputStream = file.getInputStream()) {
+            minioClient.putObject(
+                    PutObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(filePath)
+                            .stream(inputStream, file.getSize(), -1)
+                            .contentType(file.getContentType())
+                            .build()
+            );
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to upload to MinIO", e);
+        }
+
+    }
+
+    @Override
+    public byte[] downloadFile(String fileId) {
+        try (InputStream stream = minioClient.getObject(
+                GetObjectArgs.builder()
+                        .bucket(bucketProperties.getName())
+                        .object(fileId)
+                        .build())) {
+
+            return stream.readAllBytes();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error downloading file from MinIO", e);
+        }
+    }
+
+
+    @Override
+    public Metadata getMetadata(String fileId) {
+        return (Metadata) metadataRepository.findByfileId(fileId)
+                .orElseThrow(() -> new RuntimeException("Metadata not found"));
+    }
 
 }
